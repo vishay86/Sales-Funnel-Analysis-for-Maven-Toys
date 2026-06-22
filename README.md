@@ -1,4 +1,4 @@
-# Sales-Funnel-Analysis-for-Maven-Toys
+# Sales Funnel Analysis for Maven Toys
 
 ### Project Background
 
@@ -12,8 +12,15 @@ Insights and recommendations are provided in the following key areas:
 
 - **Marketing Channel Analysis**: An in-depth analysis of which marketing channels are driving the most orders and to establish a competitive Customer Acquisition Cost (CAC)
 
-### Data Structure Data Structure
+
+### Data Structure & Intial Steps
 Maven Toys database structure as seen below consists of six tables: orders, order_items, order_items_refunds, products, website_sessions, website_pageviews. A total of over 1.1 million rows
 
 <img width="835" height="458" alt="image" src="https://github.com/user-attachments/assets/f9157103-e5ab-4c5b-b8d6-055a2514ec23" />
 
+
+Prior to beginning the analysis, a variety of checks were conducted for quality control and familiarization with the datasets.
+
+
+### Executive Summary
+Sales since the company's inception have exploded every quarter over the past three years. We have seen an increase in orders from 60 in Q1 2012 to 5420 orders in Q1 2015 (⬆️8,900%)
