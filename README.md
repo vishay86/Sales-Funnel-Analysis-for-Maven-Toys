@@ -53,7 +53,7 @@ Maven Toys database structure as seen below consists of six tables: orders, orde
 
 I used SQL CTE's to create the sales funnel. I used the webpage_url in a CASE statement to get a list that would reiterate thru the whole webpage_pageviews table and give me a COUNT for each pageview_url
 
-SQL Code can be found here: SQL Analysis
+SQL Code can be found here: https://github.com/vishay86/Sales-Funnel-Analysis-for-Maven-Toys/blob/main/SQL%20Analysis
 
 | stage1_home | stage2_products | stage3_cart | stage4_shipping | stage5_billing | stage6_thank_you_order |
 | --- | --- | --- | ---| ---| ---|
@@ -63,7 +63,7 @@ SQL Code can be found here: SQL Analysis
 
 I decided to convert the total website_sessions for each stage into conversion rates (%) to better understand how our customers were flowing thru the funnel and where the drop-off's were.
 
-SQL Code can be found here: SQL Analysis
+SQL Code can be found here: https://github.com/vishay86/Sales-Funnel-Analysis-for-Maven-Toys/blob/main/SQL%20Analysis
 
 |home_to_products_conv_rate | products_to_cart_conv_rate | cart_to_shipping_conv_rate | shipping_to_billing_conv_rate | billing_to_order_conv_rate | overall_conv_rate|
 | --- | --- | --- | ---| ---| ---|
@@ -78,7 +78,7 @@ Our main priority at the moment should be to look into bettering the website exp
 ### Step 3: Identify number of orders for each marketing channel
 In order to better under understand what is currently working in terms of customer acquisition and to better inform budget allocation, I decided to deep dive into our orders data to understand what marketing channels were bringing in the most number of orders.
 
-SQL Code can be found here: SQL Analysis
+SQL Code can be found here: https://github.com/vishay86/Sales-Funnel-Analysis-for-Maven-Toys/blob/main/SQL%20Analysis
 
 | Year | Quarter | gsearch_nonbrand_orders | bsearch_nonbrand_orders | brand_search_orders | organic_search_orders | direct_type_in_orders |
 |------|---------|------------------------|------------------------|--------------------|-----------------------|----------------------|
