@@ -1,0 +1,57 @@
+##	1) Define the sales funnel and the different stages
+
+WITH funnel_stages AS(
+	
+    SELECT
+		    COUNT(DISTINCT CASE WHEN pageview_url IN ('/home', '/lander-1','/lander-2', '/lander-3','/lander-4', '/lander-5') THEN website_session_id ELSE NULL END) AS stage_1_home,
+        COUNT(DISTINCT CASE WHEN pageview_url = '/products' THEN website_session_id ELSE NULL END) AS stage_2_products,
+        COUNT(DISTINCT CASE WHEN pageview_url = '/cart' THEN website_session_id ELSE NULL END) AS stage_3_add_to_cart,
+        COUNT(DISTINCT CASE WHEN pageview_url = '/shipping' THEN website_session_id ELSE NULL END) AS stage_4_shipping,
+        COUNT(DISTINCT CASE WHEN pageview_url IN ('/billing','/billing-2') THEN website_session_id ELSE NULL END) AS stage_5_billing,
+        COUNT(DISTINCT CASE WHEN pageview_url = '/thank-you-for-your-order' THEN website_session_id ELSE NULL END) AS stage_6_thank_you_order
+	FROM website_pageviews
+)
+
+SELECT * FROM funnel_stages;
+
+
+## 2) What is the conversion rate for stage of the funnel 
+
+WITH funnel_stages AS(
+	
+    SELECT
+		COUNT(DISTINCT CASE WHEN pageview_url IN ('/home', '/lander-1','/lander-2', '/lander-3','/lander-4', '/lander-5') THEN website_session_id ELSE NULL END) AS stage_1_home,
+        COUNT(DISTINCT CASE WHEN pageview_url = '/products' THEN website_session_id ELSE NULL END) AS stage_2_products,
+        COUNT(DISTINCT CASE WHEN pageview_url = '/cart' THEN website_session_id ELSE NULL END) AS stage_3_add_to_cart,
+        COUNT(DISTINCT CASE WHEN pageview_url = '/shipping' THEN website_session_id ELSE NULL END) AS stage_4_shipping,
+        COUNT(DISTINCT CASE WHEN pageview_url IN ('/billing','/billing-2') THEN website_session_id ELSE NULL END) AS stage_5_billing,
+        COUNT(DISTINCT CASE WHEN pageview_url = '/thank-you-for-your-order' THEN website_session_id ELSE NULL END) AS stage_6_thank_you_order
+	FROM website_pageviews
+)
+
+SELECT
+	ROUND((stage_2_products/stage_1_home)*100,2) AS home_to_products_conv_rate,
+    ROUND((stage_3_add_to_cart/stage_2_products)*100,2) AS products_to_cart_conv_rate,
+    ROUND((stage_4_shipping/stage_3_add_to_cart)*100,2) AS cart_to_shipping_conv_rate,
+    ROUND((stage_5_billing/stage_4_shipping)*100,2) AS shipping_to_billing_conv_rate,
+    ROUND((stage_6_thank_you_order/stage_5_billing)*100,2) AS billing_to_order_conv_rate,
+    ROUND((stage_6_thank_you_order/stage_1_home)*100,2) AS overall_conv_rate
+FROM funnel_stages;
+
+
+## 3) Orders by marketing channels
+
+SELECT
+	YEAR(orders.created_at) AS yr,
+	QUARTER(orders.created_at) AS qtr,
+	COUNT(DISTINCT CASE WHEN website_sessions.utm_source = 'gsearch' AND utm_campaign = 'nonbrand' THEN orders.order_id ELSE NULL END) AS gsearch_nonbrand_orders,
+	COUNT(DISTINCT CASE WHEN website_sessions.utm_source = 'bsearch' AND utm_campaign = 'nonbrand' THEN orders.order_id ELSE NULL END) AS bsearch_nonbrand_orders,
+    COUNT(DISTINCT CASE WHEN utm_campaign = 'brand' THEN orders.order_id ELSE NULL END) AS brand_search_orders,
+    COUNT(DISTINCT CASE WHEN website_sessions.utm_source IS NULL AND website_sessions.http_referer IS NOT NULL THEN order_id ELSE NULL END) AS organic_search_orders,
+	COUNT(DISTINCT CASE WHEN website_sessions.utm_source IS NULL AND website_sessions.http_referer IS NULL THEN order_id ELSE NULL END) AS direct_type_in_orders
+FROM orders
+	LEFT JOIN website_sessions ON
+    website_sessions.website_session_id = orders.website_session_id
+GROUP BY 1,2
+ORDER BY 1,2;
+
